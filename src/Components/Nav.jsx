@@ -1,6 +1,20 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText, Box } from "@mui/material";
+import { useSelector } from "react-redux";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Box,
+  Badge,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "react-router-dom";
 
 const navItems = [
@@ -8,11 +22,13 @@ const navItems = [
   { label: "Products", path: "/products" },
   { label: "Cart", path: "/cart" },
   { label: "Bill", path: "/bill" },
-  { label: "OrderHistory", path: "/orderhistory" }
+  { label: "OrderHistory", path: "/orderhistory" },
 ];
 
 const Nav = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const cartItems = useSelector((state) => state.cart.cart);
+  const cartCount = cartItems ? cartItems.length : 0;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -25,7 +41,20 @@ const Nav = () => {
         {navItems.map((item) => (
           <ListItem key={item.label} disablePadding>
             <ListItemButton component={Link} to={item.path}>
-              <ListItemText primary={item.label} />
+              <ListItemText
+                primary={
+                  item.label === "Cart" ? (
+                    <Box display="flex" alignItems="center">
+                      Cart
+                      <Badge badgeContent={cartCount} color="secondary" sx={{ ml: 1 }}>
+                        <ShoppingCartIcon />
+                      </Badge>
+                    </Box>
+                  ) : (
+                    item.label
+                  )
+                }
+              />
             </ListItemButton>
           </ListItem>
         ))}
@@ -35,14 +64,13 @@ const Nav = () => {
 
   return (
     <>
-      {/* Fixed Navbar */}
       <AppBar position="fixed">
         <Toolbar
           sx={{
             justifyContent: "space-between",
             background: "linear-gradient(to right, #4facfe, #00f2fe)",
-            borderBottom: "1px solid #ccc", // Subtle bottom border
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Optional shadow
+            borderBottom: "1px solid #ccc",
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
           }}
         >
           {/* Left: Hamburger Menu for Mobile */}
@@ -78,9 +106,23 @@ const Nav = () => {
                 component={Link}
                 to={item.path}
                 variant="h6"
-                sx={{ color: "inherit", textDecoration: "none" }}
+                sx={{
+                  color: "inherit",
+                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                }}
               >
-                {item.label}
+                {item.label === "Cart" ? (
+                  <Box display="flex" alignItems="center">
+                    Cart
+                    <Badge badgeContent={cartCount} color="secondary" sx={{ ml: 1 }}>
+                      <ShoppingCartIcon />
+                    </Badge>
+                  </Box>
+                ) : (
+                  item.label
+                )}
               </Typography>
             ))}
           </Box>
