@@ -18,7 +18,7 @@ const presistConfig={
     key:'root',
     version:2,
     storage,
-    whitelist:['products','cart']
+    whitelist:['products','cart','orderHistory']
 }
 
 
@@ -34,6 +34,9 @@ const cart={
     totalAmount:0,
 }
 
+const orderHistory={
+    orderHistory:[]
+}
 
 export const fetchProducts=createAsyncThunk('products/fetch',async()=>{
     try{
@@ -110,6 +113,9 @@ const cartSlice=createSlice({
         removeFromCart: (state, action) => {
             state.cart = state.cart.filter(item => item.id !== action.payload);
         },
+        reset:(state)=>{
+                state.cart=[]
+        },
         bill:(state)=>{
             state.totalAmount=state.cart.reduce((total,item)=>{
                 console.log(total);
@@ -120,12 +126,28 @@ const cartSlice=createSlice({
     }
 })
 
-
+const orderHistorySlice=createSlice({
+    name:'orderHistory',
+    initialState:orderHistory,
+    reducers:{
+        addToHistory:(state,action)=>{
+            console.log("orders :",action.payload);
+            
+            state.orderHistory.push(action.payload)
+        },
+        removeFromHistory: (state, action) => {
+            state.orderHistory = state.orderHistory.filter(
+              (order) => order.id !== action.payload
+            );
+          },
+    }
+})
 
 // redux presist
 const rootReducer=combineReducers({
     products:productSlice.reducer,
-    cart:cartSlice.reducer
+    cart:cartSlice.reducer,
+    orderHistory:orderHistorySlice.reducer,
 })
 
 const persistedReducer=persistReducer(presistConfig,rootReducer)
@@ -147,8 +169,9 @@ const store = configureStore({
 //     }
 // })
 
-export const {addTOCart,increaseQuantity,decreaseQuantity,removeFromCart,bill}=cartSlice.actions
+export const {addTOCart,increaseQuantity,decreaseQuantity,removeFromCart,bill,reset}=cartSlice.actions
 
+export const {addToHistory,removeFromHistory}=orderHistorySlice.actions
 // export const presistor=persistStore(store)
 
 export default store

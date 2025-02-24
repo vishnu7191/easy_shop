@@ -7,6 +7,9 @@ import Nav from './Components/Nav'
 import Products from './Components/Products'
 import Cart from './Components/Cart'
 import Bill from './Components/Bill'
+import { ToastContainer } from 'react-toastify'
+import OrderHistory from './Components/OrderHistory'
+
 
 const App = () => {
 
@@ -14,12 +17,14 @@ const App = () => {
   return (
     <>
     <BrowserRouter>
+    <ToastContainer/>
       <Nav/>
       <Routes>
         <Route element={<Home/>} path='/'/>
         <Route element={<Products/>} path='/products' />
         <Route  element={<Cart/>}  path='/cart'/>
         <Route  element={<Bill/>}  path='/bill'/>
+        <Route  element={<OrderHistory/>} path='/orderhistory' />
       </Routes>
 
     

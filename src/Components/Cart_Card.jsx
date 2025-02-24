@@ -22,12 +22,12 @@ const Cart_Card = ({ product }) => {
         p: 2,
         boxShadow: 3,
         borderRadius: 3,
-        maxWidth: 450,
-        width: "100%",
+        width: "80%",
         justifyContent: "space-between",
         transition: "0.3s",
-        "&:hover": { boxShadow: 6 },
+        "&:hover": { boxShadow: 6, transform: "scale(1.02)" },
         mx: "auto",
+        flexDirection: { xs: "column", sm: "row" },
       }}
     >
       {/* Product Image */}
@@ -35,14 +35,32 @@ const Cart_Card = ({ product }) => {
         component="img"
         image={product.image}
         alt={product.title}
-        sx={{ width: 90, height: 90, objectFit: "contain", borderRadius: 2 }}
+        sx={{
+          width: { xs: "100%", sm: 90 },
+          height: { xs: 120, sm: 90 },
+          objectFit: "contain",
+          borderRadius: 2,
+        }}
       />
 
       {/* Product Details */}
-      <CardContent sx={{ flexGrow: 1, p: 1 }}>
+      <CardContent
+        sx={{
+          flexGrow: 1,
+          p: { xs: 1, sm: 2 },
+          textAlign: { xs: "center", sm: "left" },
+        }}
+      >
         <Typography
           variant="body1"
-          sx={{ fontWeight: "bold", color: "#333", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 200 }}
+          sx={{
+            fontWeight: "bold",
+            color: "#333",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: 200,
+          }}
         >
           {product.title}
         </Typography>
@@ -60,7 +78,8 @@ const Cart_Card = ({ product }) => {
           px: 1.5,
           py: 0.5,
           borderRadius: 2,
-          mx: 2,
+          mx: { xs: 0, sm: 2 },
+          mt: { xs: 1, sm: 0 },
         }}
       >
         {/* Decrease Quantity or Remove */}
@@ -83,7 +102,10 @@ const Cart_Card = ({ product }) => {
         )}
 
         {/* Quantity */}
-        <Typography variant="body2" sx={{ fontWeight: "bold", mx: 1 }}>
+        <Typography
+          variant="body2"
+          sx={{ fontWeight: "bold", mx: 1, fontSize: "16px" }}
+        >
           {product.quantity}
         </Typography>
 
