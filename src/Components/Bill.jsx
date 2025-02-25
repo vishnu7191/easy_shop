@@ -9,6 +9,7 @@ const Bill = () => {
   const cart = useSelector((state) => state.cart.cart);
   const dispatch = useDispatch();
 
+  
   // Calculate total items and total price
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
   const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);

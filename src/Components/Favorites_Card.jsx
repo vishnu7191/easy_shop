@@ -1,38 +1,19 @@
 import React from "react";
 import { Card, CardMedia, CardContent, Typography, Button, Box, Rating, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { addTOCart, addToFavorites, removeFromFavorites } from "./store";
-import { useNavigate } from "react-router-dom";
+import { addTOCart, removeFromFavorites } from "./store";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-const truncateText = (text, length) => {
-  return text.length > length ? text.substring(0, length) + "..." : text;
-};
-
-const Products_Card = ({ product }) => {
+const Favorites_Card = ({ product }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const cart = useSelector((state) => state.cart.cart);
-  const favorites = useSelector((state) => state.cart.favorites); // Get favorites from Redux
-  
-  // Check if the product is already in the cart or favorites
+
+  // Check if the product is already in the cart
   const isInCart = cart.some((item) => item.id === product.id);
-  const isFavorite = favorites?.some((item) => item.id === product.id);
 
   const handleAddToCart = () => {
     if (!isInCart) {
       dispatch(addTOCart(product));
-    }
-  };
-
-  const handleToggleFavorite = () => {
-    console.log(isFavorite);
-    
-    if (isFavorite) {
-      dispatch(removeFromFavorites(product));
-    } else {
-      dispatch(addToFavorites(product));
     }
   };
 
@@ -47,12 +28,12 @@ const Products_Card = ({ product }) => {
         position: "relative",
       }}
     >
-      {/* Favorite Button */}
+      {/* Remove from Favorites Button */}
       <IconButton
-        onClick={handleToggleFavorite}
-        sx={{ position: "absolute", top: 10, right: 10, color: isFavorite ? "red" : "gray" }}
+        onClick={() => dispatch(removeFromFavorites(product))}
+        sx={{ position: "absolute", top: 10, right: 10, color: "red" }}
       >
-        {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+        <FavoriteIcon />
       </IconButton>
 
       {/* Product Image */}
@@ -67,7 +48,7 @@ const Products_Card = ({ product }) => {
       {/* Product Details */}
       <CardContent>
         <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
-          {truncateText(product.title, 25)}
+          {product.title}
         </Typography>
 
         {/* Rating */}
@@ -99,4 +80,4 @@ const Products_Card = ({ product }) => {
   );
 };
 
-export default Products_Card;
+export default Favorites_Card;

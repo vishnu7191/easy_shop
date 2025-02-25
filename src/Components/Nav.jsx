@@ -20,9 +20,11 @@ import { Link } from "react-router-dom";
 const navItems = [
   { label: "Home", path: "/" },
   { label: "Products", path: "/products" },
+  { label: "Wishlist", path: "/favorites" },
   { label: "Cart", path: "/cart" },
   { label: "Bill", path: "/bill" },
   { label: "OrderHistory", path: "/orderhistory" },
+  
 ];
 
 const Nav = () => {

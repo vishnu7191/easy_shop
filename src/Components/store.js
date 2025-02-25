@@ -32,6 +32,7 @@ const products={
 const cart={
     cart:[],
     totalAmount:0,
+    favorites:[],
 }
 
 const orderHistory={
@@ -75,6 +76,8 @@ const productSlice=createSlice({
     }
 })
 
+
+
 const cartSlice=createSlice({
     name:'cart',
     initialState:cart,
@@ -110,6 +113,19 @@ const cartSlice=createSlice({
                 }
             }
         },
+        addToFavorites: (state, action) => {
+            console.log("fav ",action);
+            if (!state.favorites) {
+                state.favorites = []; // Ensure it's defined
+              }
+              if (!state.favorites.some((item) => item.id === action.payload.id)) {
+                state.favorites.push(action.payload);
+              }
+          },
+          removeFromFavorites: (state, action) => {
+            
+            state.favorites = state.favorites.filter((item) => item.id !== action.payload.id);
+          },
         removeFromCart: (state, action) => {
             state.cart = state.cart.filter(item => item.id !== action.payload);
         },
@@ -169,7 +185,7 @@ const store = configureStore({
 //     }
 // })
 
-export const {addTOCart,increaseQuantity,decreaseQuantity,removeFromCart,bill,reset}=cartSlice.actions
+export const {addTOCart,increaseQuantity,decreaseQuantity,removeFromCart,bill,reset,addToFavorites,removeFromFavorites}=cartSlice.actions
 
 export const {addToHistory,removeFromHistory}=orderHistorySlice.actions
 // export const presistor=persistStore(store)

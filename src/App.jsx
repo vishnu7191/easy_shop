@@ -9,6 +9,8 @@ import Cart from './Components/Cart'
 import Bill from './Components/Bill'
 import { ToastContainer } from 'react-toastify'
 import OrderHistory from './Components/OrderHistory'
+import { Favorite } from '@mui/icons-material'
+import Favorites from './Components/Favorites'
 
 
 const App = () => {
@@ -25,6 +27,7 @@ const App = () => {
         <Route  element={<Cart/>}  path='/cart'/>
         <Route  element={<Bill/>}  path='/bill'/>
         <Route  element={<OrderHistory/>} path='/orderhistory' />
+        <Route  element={<Favorites />} path='/favorites' />
       </Routes>
 
     
