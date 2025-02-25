@@ -14,9 +14,8 @@ const Products_Card = ({ product }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart.cart);
-  const favorites = useSelector((state) => state.cart.favorites); // Get favorites from Redux
-  
-  // Check if the product is already in the cart or favorites
+  const favorites = useSelector((state) => state.cart.favorites);
+
   const isInCart = cart.some((item) => item.id === product.id);
   const isFavorite = favorites?.some((item) => item.id === product.id);
 
@@ -26,9 +25,12 @@ const Products_Card = ({ product }) => {
     }
   };
 
+  const handleBuyNow = () => {
+    dispatch(addTOCart(product)); // Add item to cart
+    navigate("/bill"); // Navigate to billing page
+  };
+
   const handleToggleFavorite = () => {
-    console.log(isFavorite);
-    
     if (isFavorite) {
       dispatch(removeFromFavorites(product));
     } else {
@@ -82,18 +84,45 @@ const Products_Card = ({ product }) => {
         <Typography variant="h6" color="primary" sx={{ mt: 1, fontWeight: "bold" }}>
           ${product.price}
         </Typography>
+{/* Buttons: If item is in cart, show only "Added", else show both buttons */}
+<Box display="flex" gap={1} sx={{ mt: 2 }}>
+  {isInCart ? (
+    <Button
+      variant="contained"
+      color="success"
+      fullWidth
+      sx={{ fontSize: "0.85rem", py: 1, fontWeight: "bold", borderRadius: 2 }}
+      disabled
+    >
+      Added
+    </Button>
+  ) : (
+    <>
+      {/* Add to Cart Button */}
+      <Button
+        variant="contained"
+        color="secondary"
+        fullWidth
+        sx={{ fontSize: "0.85rem", py: 1, fontWeight: "bold", borderRadius: 2 }}
+        onClick={handleAddToCart}
+      >
+        Add to Cart
+      </Button>
 
-        {/* Add to Cart Button */}
-        <Button
-          variant="contained"
-          color={isInCart ? "success" : "secondary"}
-          fullWidth
-          sx={{ mt: 2, fontWeight: "bold", borderRadius: 2 }}
-          onClick={handleAddToCart}
-          disabled={isInCart}
-        >
-          {isInCart ? "Added" : "Add to Cart"}
-        </Button>
+      {/* Buy Now Button */}
+      <Button
+        variant="contained"
+        color="primary"
+        fullWidth
+        sx={{ fontSize: "0.85rem", py: 1, fontWeight: "bold", borderRadius: 2 }}
+        onClick={handleBuyNow}
+      >
+        Buy Now
+      </Button>
+    </>
+  )}
+</Box>
+
       </CardContent>
     </Card>
   );
